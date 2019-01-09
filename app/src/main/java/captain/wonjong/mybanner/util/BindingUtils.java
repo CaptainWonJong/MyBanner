@@ -11,6 +11,8 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,6 +37,19 @@ public class BindingUtils {
                 imageView.setBackgroundColor(Color.parseColor(url));
             } else {
                 Glide.with(imageView.getContext()).load(url).into(imageView);
+            }
+        }
+    }
+
+    @BindingAdapter({"bind:setImageAnim"})
+    public static void setImageAnim(ImageView imageView, String url) {
+        if (!TextUtils.isEmpty(url)) {
+            if ('#' == url.charAt(0)) {
+                imageView.setBackgroundColor(Color.parseColor(url));
+            } else {
+                Glide.with(imageView.getContext()).load(url).into(imageView);
+                Animation anim = AnimationUtils.loadAnimation(imageView.getContext(), R.anim.alpha_on);
+                imageView.setAnimation(anim);
             }
         }
     }

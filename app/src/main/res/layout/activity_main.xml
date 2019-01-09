@@ -13,15 +13,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#22aa00ff"
+        android:orientation="vertical"
         tools:context=".main.MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            bind:setBackgroundColor="@{viewModel.bgModel.bgColor}">
+
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="232dp">
 
             <captain.wonjong.mybanner.util.AutoScrollViewPager
-                android:id="@+id/banner"
+                android:id="@+id/vp_banner"
                 android:layout_width="match_parent"
                 android:layout_height="232dp"
                 android:adapter="@{viewModel.bannerAdapter}"
@@ -29,5 +36,17 @@
                 bind:onPageChangeListener="@{viewModel.onPageChangeListener}"
                 bind:setAutoScroll="@{viewModel.isAutoScroll}"/>
         </FrameLayout>
+
+
+        <ImageView
+            bind:setImageAnim="@{viewModel.bgModel.bnrBg}"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
+
+        <ImageView
+            android:src="@drawable/ic_launcher_foreground"
+            android:id="@+id/iv_test"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
     </LinearLayout>
 </layout>

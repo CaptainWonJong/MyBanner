@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import captain.wonjong.mybanner.main.adapter.BannerAdapter;
+import captain.wonjong.mybanner.main.model.BannerBackModel;
 import captain.wonjong.mybanner.util.AutoScrollViewPager;
 import captain.wonjong.mybanner.util.Buffer;
 import captain.wonjong.mybanner.util.JsonToMap;
@@ -20,14 +21,19 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<ArrayList<HashMap<String, Object>>> bannerList = new MutableLiveData<>();
     public MutableLiveData<Integer> bannerInterval = new MutableLiveData<>();
     public MutableLiveData<Boolean> isAutoScroll = new MutableLiveData<>();
+
     private AutoScrollViewPager mBanner;
+
+    public BannerBackModel bgModel;
 
 
     public BannerAdapter bannerAdapter;
 
     public void init(Context context) {
         testSetData();
-        bannerAdapter = new BannerAdapter(context, bannerList);
+        bgModel = new BannerBackModel();
+
+        bannerAdapter = new BannerAdapter(context, bannerList, bgModel);
         bannerAdapter.setOnItemClickListener(onBannerItemClickListener);
         isAutoScroll.setValue(true);
         bannerInterval.setValue(3000);

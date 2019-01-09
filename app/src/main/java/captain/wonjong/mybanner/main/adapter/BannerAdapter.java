@@ -2,6 +2,9 @@ package captain.wonjong.mybanner.main.adapter;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.support.animation.DynamicAnimation;
+import android.support.animation.SpringAnimation;
+import android.support.animation.SpringForce;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import java.util.HashMap;
 
 import captain.wonjong.mybanner.R;
 import captain.wonjong.mybanner.main.BannerModel;
+import captain.wonjong.mybanner.main.model.BannerBackModel;
 import captain.wonjong.mybanner.util.RPKey;
 
 public class BannerAdapter extends PagerAdapter{
@@ -25,13 +29,16 @@ public class BannerAdapter extends PagerAdapter{
     private OnItemClickListener mItemClickListener = null;
     public MutableLiveData<ArrayList<HashMap<String, Object>>> bnrList;
     private LayoutInflater m_layoutInflater = null;
+    private BannerBackModel bbModel;
 
     private int m_nTotalCount = 0;		// 가짜 페이지 포함 갯수
     private int m_nImageNumber = 0;		// 가짜 페이지 2개가 존재하기에 가짜 페이지 제외한 실제  이미지 번호
 
-    public BannerAdapter(Context context, MutableLiveData<ArrayList<HashMap<String, Object>>> bannerList) {
+    public BannerAdapter(Context context, MutableLiveData<ArrayList<HashMap<String, Object>>> bannerList, BannerBackModel bbModel) {
         mContext = context;
         bnrList = bannerList;
+        this.bbModel = bbModel;
+
         this.m_nTotalCount = (bnrList.getValue().size() > 1)? (bnrList.getValue().size() + 2) : bnrList.getValue().size();
         this.m_layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -89,8 +96,13 @@ public class BannerAdapter extends PagerAdapter{
             m_nImageNumber = position;
         }
 
-        Glide.with(mContext).load(bnrList.getValue().get(m_nImageNumber).get(RPKey.MAIN_IMAGE)).into(ivBannerImage);
+        String imageUrl = bnrList.getValue().get(m_nImageNumber).get(RPKey.MAIN_IMAGE).toString();
+
+        Glide.with(mContext).load(imageUrl).into(ivBannerImage);
         tvBannerText.setText(bnrList.getValue().get(m_nImageNumber).get(RPKey.TITLE).toString());
+
+        bbModel.bnrBg.setValue(bnrList.getValue().get(m_nImageNumber).get(RPKey.BACK_IMAGE).toString());
+        bbModel.bgColor.setValue(bnrList.getValue().get(m_nImageNumber).get(RPKey.BACK_COLOR).toString());
 
         pager.addView(view);
         return view;
